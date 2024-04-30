@@ -1,17 +1,9 @@
-import pyautogui
+import win32api
 import time
-import random
 
-# קביעת מיקום המסך
-screen_width, screen_height = pyautogui.size()
-
-while True:
-    # יצירת מיקום רנדומלי
-    random_x = random.randint(0, screen_width)
-    random_y = random.randint(0, screen_height)
-
-    # הזזת העכבר למיקום הרנדומלי
-    pyautogui.moveTo(random_x, random_y, duration=0.25)
-
-    # המתנה 10 שניות
-    time.sleep(10)
+def click(x,y):
+    win32api.SetCursorPos((x,y))
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+    time.sleep(0.10)
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+    time.sleep(0.10) 
