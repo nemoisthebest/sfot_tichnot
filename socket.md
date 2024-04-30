@@ -8,21 +8,21 @@ import socket
 host = ""
 port = ""
 
-#create socket and connect the clinet
-with socket.socket () as client:
-	client.connect((host, port))
-
-import client
+import socket
 hostname = ""
 portnum = ""
 
 def netcat ():
-	s =socket.socket ()
-  s.connect (hostname, int(portnum))
+	 s=socket.socket()
+
+#create socket and connect the clinet
+with socket.socket () as client:
+    client.connect((host, port))
+
 
 #recive commands
 commands = client.recv ()
 
 #send answer
-answer = input ""
+answer = input ("")
 client.sendall (answer)
