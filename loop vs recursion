@@ -1,4 +1,1 @@
-Recursion doesn't need a condition to be satisfied before it can run.
-Recursion has limits to its execution. This is mainly because functions are stored on the Stack Memory, which has a maximum size. 
-In comparison, loops are stored in dynamic memory, where variables can be created indefinitely.
-The execution of a recursive function is relatively slower than loops.
+רקורסיה היא פונקציה אשר קוראת לעצמה שוב ושוב עד שהיא לא עומדת בתנאי שהוגדר לה 
