@@ -7,7 +7,7 @@ import random
 runtime = 1 * 60
 
 # הגדרת פונקציה 
-def click():
+def main():
    
 # הגדרת זמן לריצת התוכנית וזמן לעצירתה
    start_time = time.time()
@@ -34,4 +34,6 @@ def click():
             time.sleep(10)
 
 # קריאה לפונקציה
-click()
+if __name__ == "__main__":
+    main()
+
