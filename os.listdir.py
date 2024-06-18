@@ -1,3 +1,8 @@
+# Name: mouth_random.py
+# Author: emily h. (nemo) 
+# Date: 16.06.24
+# Description: A recursive function that receives a path to a folder and returns a list with all the files in it..
+
 # os ייבוא מודל
 import os
  
