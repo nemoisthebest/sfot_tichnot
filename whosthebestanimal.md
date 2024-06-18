@@ -1,3 +1,5 @@
-# nemo is the best animal because he can swim
-# nemo is the best animal because he is brave
-# nemo is the best animal because he can talk
+ברווז הוא החיה הכי טובה כי הוא יכולה לשחות
+
+ברווז הוא החיה הכי טובה כי הוא יכולה לצלול
+
+ברווז הוא החיה הכי טובה כי הוא מייצר גוזלים מתוקים ואפשר לגדל אותם
