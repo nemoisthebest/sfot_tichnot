@@ -1,7 +1,7 @@
 # Name: requests.py
 # Author: emily h. (nemo) 
 # Date: 30.04.24
-# Description: this program will group with common file names on websites and try to access them all
+# Description: webcralwer that receives a file with common file names on websites and tries to access them all.
 
 import requests
 from bs4 import BeautifulSoup
