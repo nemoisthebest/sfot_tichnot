@@ -1,7 +1,7 @@
 # Name: 1-socket.py
 # Author: emily h. (nemo) 
 # Date: 30.04.24
-# Description: this program connects remotely, receives CMD commands and returns output
+# Description: A program that connects via socket to a remote connection, receives CMD commands and returns output. On the other side you connect with netcat.
 
 
 import socket 
