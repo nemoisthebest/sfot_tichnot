@@ -1,6 +1,6 @@
 # Name: requests.py
 # Author: emily h. (nemo) 
-# Date: 30.04.24
+# Date: 19.06.24
 # Description: webcralwer that receives a file with common file names on websites and tries to access them all.
 
 # ייבוא מודל
