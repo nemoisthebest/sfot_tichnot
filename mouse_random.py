@@ -1,4 +1,4 @@
-# Name: mouth_random.py
+# Name: mouse_random.py
 # Author: emily h. (nemo) 
 # Date: 17.06.24
 # Description: A Python program generates random locations on the screen and moves the mouse to the location every 10 seconds.
