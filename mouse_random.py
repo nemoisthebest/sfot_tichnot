@@ -10,7 +10,7 @@ import time
 import random
 
 # הגדרת זמן ריצה
-runtime = 1 * 60
+runtime = 60
 
 # הגדרת פונקציה 
 def main():
