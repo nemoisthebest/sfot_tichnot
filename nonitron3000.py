@@ -6,6 +6,7 @@ from translate import Translator
 from bidi.algorithm import get_display
 
 
+
 # Constants
 WELCOME_MASSAGE = "Welcome to noni's brain!!"
 MENU_MASSAGE_SIMPLE_USER = """
@@ -129,17 +130,17 @@ class UsersManager:
      currentLoggedOnUser = None
 
      def __init__(self):
-        #open file that inclouds info about users, in read mood.
+        #open file that inclouds info about users,  in read mood.
         users_file = open(DATABASE_USERS_PATH, "r")
-        #try to read the lines in the file and parse the info, in this line we convert from python to json.
+        #try to read the lines in the file and parse the info, in this line we convert from json to python.
         try:
             users_file_json_data = loads(users_file.read())
             # create a user and add it to the current user list.
-            for userData in users_file_json_data:
+            for userData in users_file_json_data["users"]:
                 self.currentUsers.append(User.fromJsonObject(userData))
         #if the function cant go throw the lines it sends a massage to the user and exit.
         except:
-            print("[-] Couldn't read users information:((((((")
+            print("[-] Couldn't read users information :((((((")
             exit()
             # close the file
         users_file.close()
@@ -156,7 +157,7 @@ class UsersManager:
                     print ("Logon successfully to noonie's brain!")
                     # add to the current user list the name of the currrent user.
                     self.currentLoggedOnUser = currentuser
-                    return AUTHENTICATION_SUCCESSFUL, currentuser.usertype
+                    return AUTHENTICATION_SUCCESSFUL
                 # if the logon havent finished successfully, the user will recive a massage and another try to logon(if he hasn't reached to the max attamps.)
             print(f"Loser you have {MAX_AUTHENTICATION_LOOP_ATTEMPTS - logon_attempts_made - 1} more tries to login.")
         # If all attempts failed.
@@ -211,8 +212,19 @@ def translator_from_Hebrew_to_Russian():
     #Printing the translation
     print (translation)
 
-def add_user_to_database():
-    
+def add_user_to_database(new_user):
+    with open(DATABASE_USERS_PATH, "a") as f:
+        # First we load existing data into a dict.
+        file_data = loads(f)
+        # Join new_user with file_data inside emp_details
+        file_data["USERS_DATABASE"].append(new_user)
+        # Sets file's current position at offset.
+        f.seek(0)
+        # convert back to json.
+        dumps(file_data, f, indent = 4)
+        DATABASE_USERS_PATH.close()
+
+
 
 def main():
 
@@ -220,8 +232,10 @@ def main():
     print(WELCOME_MASSAGE)
     UserManager.authenticate()
 
-    print(MENU_MASSAGE_ADMIN_USER)
-    print(MENU_MASSAGE_SIMPLE_USER)
+    if UserManager.currentLoggedOnUser.usertype == "admin":
+        print(MENU_MASSAGE_ADMIN_USER)
+    else:
+        print(MENU_MASSAGE_SIMPLE_USER)
     user_menu_input_choice = int(input("Enter the index of the action you want to preform: "))
 
     match user_menu_input_choice:
@@ -250,7 +264,11 @@ def main():
         case 9:
             return 0
         case 10:
-            return 0
+            username = input("enter username:" )
+            password = input("enter password:" )
+            full_name = input("enter full_name:" )
+            user_type = input("enter user_type:" )
+            add_user_to_database()
         case _:
             print("Error")
 
