@@ -18,7 +18,7 @@ MENU:
 4. Return a memory.
 5. Check account status.
 6. Translate sentences from Russian to Hebrew.
-to exit write exit
+0.to exit enter exit
 """
 MENU_MASSAGE_ADMIN_USER = """
 MENU:
@@ -86,7 +86,7 @@ admin action's:
 8. Report a loss of memory.
 9. Add a new memories.
 10. Add a new user to the database.
-to exit write exit
+0.to exit enter exit
 """
 
 MEMORY_ROOTDIR_PATH = 'C:\\Users\\Administrator\\Documents\\emily\\python\\nonitron\\memories'
@@ -143,7 +143,8 @@ class UsersManager:
                 self.currentUsers.append(User.fromJsonObject(userData))
         #If the function cant go throw the lines it sends a massage to the user and exit.
         except:
-            print("[-] Couldn't read users information :((((((")
+            print("""[-] Couldn't read users information :((((((
+                  try to save the user database file and run the code again.""")
             exit()
         #Close the file.
         users_file.close()
@@ -236,11 +237,13 @@ def add_user_to_database(new_user: User):
     parsed_json_data : list[User] = load(json_data_base_file)
     #Close file.
     json_data_base_file.close()
+
     #Add the new user data into the file content without run over the original text.
     parsed_json_data.append(new_user)
-    #Ofen file with write Permissions.
+    #Open file with write Permissions.
+
     json_data_base_file = open(DATABASE_USERS_PATH, "w")
-    #Convert the file content with the new user back to json file
+    #Convert the file content with the new user back to json file.
     dump(parsed_json_data, json_data_base_file)
     #Close file.
     json_data_base_file.close()
@@ -255,6 +258,7 @@ def block_simple_users(username_to_block: User):
     parsed_json_data : list[User] = load(json_data_base_file)
     #Close file.
     json_data_base_file.close()
+
     #Delete the blocked user data from the file content.
     wanted_user_to_block = None
     for user_object in parsed_json_data:
@@ -262,9 +266,10 @@ def block_simple_users(username_to_block: User):
             wanted_user_to_block = user_object
             break
     parsed_json_data.remove(wanted_user_to_block)
-    #Ofen file with write Permissions.
+
+    #Open file with write Permissions.
     json_data_base_file = open(DATABASE_USERS_PATH, "w")
-    #Convert the file content with the new user back to json file
+    #Convert the file content without the blocked user back to json file.
     dump(parsed_json_data, json_data_base_file)
     #Close file.
     json_data_base_file.close()
@@ -291,11 +296,26 @@ def borrow_memory(user):
     if memory_to_borrow in list_of_memories:
         Path(f'{MEMORY_ROOTDIR_PATH}\\{memory_to_borrow}').rename(f'C:\\Users\\Administrator\\Documents\\emily\\python\\nonitron\\{user.username}\\{memory_to_borrow}')
         print("You are the current owner of memory :)")
+        #Open file with read Permissions.
         json_data_base_file = open(DATABASE_USERS_PATH, "r+")
+        #Convert file content from json to python dict.
         parsed_json_data : list[User] = load(json_data_base_file)
+        #Close file.
+        json_data_base_file.close()
+
+        #select the loged on user and update his data about his memories amount.
+        for user_object in parsed_json_data:
+            if user_object["username"] == user.username:
+                wanted_user_to_update = user_object
+                break
         user.memories_num += 1
-        json_data_base_file = open(DATABASE_USERS_PATH, "w")                    
-        dump(user.memories_num, json_data_base_file)
+        wanted_user_to_update.update({"current_memories_owned_amount": user.memories_num})
+
+        #Open file with write Permissions.
+        json_data_base_file = open(DATABASE_USERS_PATH, "w")                  
+        #Convert the file content with the updetes about the memories amount to json file.
+        dump(parsed_json_data, json_data_base_file)
+        #Close file.
         json_data_base_file.close()
     else:
         print("Memory doesn't exist...")
@@ -323,19 +343,31 @@ def return_memory(user):
     list_of_memories = listdir(f'C:\\Users\\Administrator\\Documents\\emily\\python\\nonitron\\{user.username}')
     if memory_to_return in list_of_memories:
         Path(f'C:\\Users\\Administrator\\Documents\\emily\\python\\nonitron\\{user.username}\\{memory_to_return}').rename(f'{MEMORY_ROOTDIR_PATH}\\{memory_to_return}')
-        print("You returned the  memory to the database :)")
+        print("You returned the memory to the database :)")
+        #Open file with read Permissions.
         json_data_base_file = open(DATABASE_USERS_PATH, "r+")
+        #Convert file content from json to python dict.
         parsed_json_data : list[User] = load(json_data_base_file)
-        memories_owned_amount = user.memories_num
-        if memories_owned_amount in parsed_json_data:
-            memories_owned_amount -= 1
-        parsed_json_data.append(memories_owned_amount)
-        json_data_base_file = open(DATABASE_USERS_PATH, "w")                    
+        #Close file.
+        json_data_base_file.close()
+
+        #select the loged on user and update his data about his memories amount.
+        for user_object in parsed_json_data:
+            if user_object["username"] == user.username:
+                wanted_user_to_update = user_object
+                break
+        user.memories_num -= 1
+        wanted_user_to_update.update({"current_memories_owned_amount": user.memories_num})
+
+        #Open file with write Permissions.
+        json_data_base_file = open(DATABASE_USERS_PATH, "w")                  
+        #Convert the file content with the updetes about the memories amount to json file.
         dump(parsed_json_data, json_data_base_file)
+        #Close file.
         json_data_base_file.close()
     else:
         print("Memory doesn't exist...")
-
+    
 
 def check_acount_status(user):
     '''This function print the current amount of memories owned by the user and his bad points ampont.'''
@@ -345,19 +377,30 @@ def check_acount_status(user):
 
 
 def report_about_memory_loss(user):
-    '''This function addto the user that lost a memory bad point.'''
+    '''This function add to the user that lost a memory bad point.'''
 
-    json_data_base_file = open(DATABASE_USERS_PATH, "r+")
-    parsed_json_data : list[User] = load(json_data_base_file)
-    json_data_base_file.readlines
     user_that_lost_memory = input("Enter the name of the user that lost a memory: ")
-    if user_that_lost_memory in json_data_base_file:
-        bad_points_num = user.bad_points
-    if user_that_lost_memory in user.currentUsers:
-        bad_points_num[0] += 1
-        json_data_base_file.write(bad_points_num)
-        dump(json_data_base_file, parsed_json_data)
-        json_data_base_file.close()
+    #Open file with read Permissions.
+    json_data_base_file = open(DATABASE_USERS_PATH, "r+")
+    #Convert file content from json to python dict.
+    parsed_json_data : list[User] = load(json_data_base_file)
+    #Close file.
+    json_data_base_file.close()
+
+    #select the loged on user and update his data about his bad points amount.
+    for user_object in parsed_json_data:
+        if user_object["username"] == user_that_lost_memory:
+            wanted_user_to_update = user_object
+            break
+    bad_points = wanted_user_to_update["bad_points_amount"] +1
+    wanted_user_to_update.update({"bad_points_amount": bad_points})
+
+    #Open file with write Permissions.
+    json_data_base_file = open(DATABASE_USERS_PATH, "w")                  
+    #Convert the file content with the updetes about the bad points amount to json file.
+    dump(parsed_json_data, json_data_base_file)
+    #Close file.
+    json_data_base_file.close()
 
 
 def main():
@@ -418,12 +461,12 @@ def main():
                     "user_type": user_type_input
                 }
                 add_user_to_database(new_user_object)
-            case "exit":
+            case 0:
                 exit()
             case _:
                 print("Error")
        
-        user_menu_input_choice = (input("Enter the index of the action you want to preform: "))
+        user_menu_input_choice = int(input("Enter the index of the action you want to preform: "))
 
 if __name__ == "__main__":
     main()
