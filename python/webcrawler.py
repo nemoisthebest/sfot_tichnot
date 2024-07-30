@@ -1,4 +1,4 @@
-# Name: webcrawler.py
+# Name: 6-webcrawler.py
 # Author: emily h. (nemo) 
 # Date: 19.06.24
 # Description: webcralwer that receives a file with common file names on websites and tries to access them all.
